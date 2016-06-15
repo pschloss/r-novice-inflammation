@@ -43,7 +43,7 @@ To load our inflammation data, first we need to tell our computer where is the f
 
 
 ~~~{.r}
-setwd("~/Desktop/r-novice-inflammation/)
+setwd("~/Desktop/r-novice-inflammation/")
 ~~~
 
 Just like in the Unix Shell, we type the command and then press `Enter` (or `return`).
@@ -66,6 +66,16 @@ The filename needs to be a character string (or [string](reference.html#string) 
 > `read.csv` actually has many more arguments that you may find useful when
 > importing your own data in the future. You can learn more about these
 > options in this supplementary [lesson](01-supp-read-write-csv.html).
+
+
+> ## Challenge - Loading data with headers {.challenge}
+>
+> What happens if you forget to put `header = FALSE`? The default value is `header = TRUE`, which you can check with `?read.csv` or `help(read.csv)`. What do you expect will happen if you leave the default value? Before you run any code, think about what will happen to the first few rows of your data frame, and its overall size. Then run the following code and see if your expectations agree:
+>
+~~~{.r}
+read.csv(file = "data/inflammation-01.csv")
+~~~
+
 
 The utility of a function is that it will perform its given action on whatever value is passed to the named argument(s).
 For example, in this case if we provided the name of a different file to the argument `file`, `read.csv` would read it instead.
@@ -208,7 +218,7 @@ weight_lb
 Since `weight_lb` doesn't "remember" where its value came from, it isn't automatically updated when `weight_kg` changes.
 This is different from the way spreadsheets work.
 
-> ## Tip {.callout} 
+> ## Tip {.callout}
 >An alternative way to print the value of a variable is to use () around the assignment statement. As an example: `(total_weight <- weight_kg + weight_lb)`, adds the values of `weight_kg` and `weight_lb`, assigns the result to the `total_weight`, and finally prints the assigned value of the variable `total_weight`.
 
 
@@ -427,6 +437,11 @@ dat[, 16]
 
 ~~~
 
+> ## Tip {.callout}
+>
+> Columns can also be addressed by name, with either the `$` operator (ie. `dat$Age`) or square brackets (ie. `dat[,'Age']`).
+> You can learn more about subsetting by column name in this supplementary [lesson](01-supp-addressing-data.html).
+
 Now let's perform some common mathematical operations to learn about our inflammation data.
 When analyzing data we often want to look at partial statistics, such as the maximum value per patient or the average value per day.
 One way to do this is to select the data we want to create a new temporary data frame, and then perform the calculation on this subset:
@@ -445,6 +460,21 @@ max(patient_1)
 [1] 18
 
 ~~~
+
+> ## Tip {.callout}
+>
+> On some installations of R, the code above may give you an error, since R does not automatically convert a sliced row of a `data.frame` to a vector. (Confusingly, sliced columns are automatically converted.)
+> If this happens, you can use the `as.numeric` command to convert the row of data to a numeric vector:
+> 
+> `patient_1 <- as.numeric(dat[1, ])`
+>
+> `max(patient_1)`
+>
+> You can also check the `class` of each object:
+>
+> `class(dat[1, ])`
+>
+> `class(as.numeric(dat[1, ]))`
 
 We don't actually need to store the row in a variable of its own.
 Instead, we can combine the selection and the function call:
@@ -660,7 +690,7 @@ The maximum value rises and falls perfectly smoothly, while the minimum seems to
 > * The function `dim` gives the dimensions of a data frame.
 > * Use `object[x, y]` to select a single element from a data frame.
 > * Use `from:to` to specify a sequence that includes the indices from `from` to
->`to`. 
+>`to`.
 > * All the indexing and slicing that works on data frames also works on vectors.
 > * Use `#` to add comments to programs.
 > * Use `mean`, `max`, `min` and `sd` to calculate simple statistics.
